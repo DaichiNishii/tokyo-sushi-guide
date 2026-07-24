@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>東京 鮨ガイド — ミシュラン2026 & 百名店</title>
+<style>
+  :root {
+    --ground: #f4efe6; --panel: #fbf8f2; --ink: #1c1815; --ink-soft: #52493f;
+    --ink-faint: #8a7d6d; --line: #e0d6c5; --line-soft: #ece3d4;
+    --shu: #b23a24; --shu-soft: #d9603f; --gold: #a9832f; --gold-bright: #b98e2f;
+    --good: #4f7a3f; --warn: #b5842a; --hot: #b23a24;
+    --shadow: 0 1px 2px rgba(28,24,21,.04), 0 6px 20px rgba(28,24,21,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #14110e; --panel: #1e1a15; --ink: #f2ece1; --ink-soft: #c3b7a5;
+      --ink-faint: #8a7c68; --line: #322b22; --line-soft: #262019; --shu: #e0714f;
+      --shu-soft: #e0714f; --gold: #d3ab5a; --gold-bright: #e6c377; --good: #7ba766;
+      --warn: #d3ab5a; --hot: #e0714f; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 26px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #14110e; --panel: #1e1a15; --ink: #f2ece1; --ink-soft: #c3b7a5;
+    --ink-faint: #8a7c68; --line: #322b22; --line-soft: #262019; --shu: #e0714f;
+    --shu-soft: #e0714f; --gold: #d3ab5a; --gold-bright: #e6c377; --good: #7ba766;
+    --warn: #d3ab5a; --hot: #e0714f; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 26px rgba(0,0,0,.4);
+  }
+  :root[data-theme="light"] {
+    --ground: #f4efe6; --panel: #fbf8f2; --ink: #1c1815; --ink-soft: #52493f;
+    --ink-faint: #8a7d6d; --line: #e0d6c5; --line-soft: #ece3d4; --shu: #b23a24;
+    --shu-soft: #d9603f; --gold: #a9832f; --gold-bright: #b98e2f; --good: #4f7a3f;
+    --warn: #b5842a; --hot: #b23a24; --shadow: 0 1px 2px rgba(28,24,21,.04), 0 6px 20px rgba(28,24,21,.06);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    line-height: 1.7; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .serif { font-family: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Yu Mincho", "YuMincho", "Noto Serif JP", serif; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 18px; }
+
+  header.hero { padding: 48px 18px 22px; text-align: center; }
+  .hero .kicker { font-size: 12px; letter-spacing: .34em; text-transform: uppercase; color: var(--shu); font-weight: 700; margin: 0 0 14px; }
+  .hero h1 { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-weight: 600; margin: 0; letter-spacing: .05em; font-size: clamp(30px, 8vw, 46px); line-height: 1.24; text-wrap: balance; }
+  .hero h1 .mark { color: var(--shu); }
+  .hero .lead { color: var(--ink-soft); margin: 14px auto 0; max-width: 46ch; font-size: 15px; }
+
+  .tabbar { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--ground) 90%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .tabbar .inner { max-width: 720px; margin: 0 auto; padding: 10px 18px; display: flex; gap: 8px; }
+  .tabbar button { flex: 1; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; padding: 10px 12px; border-radius: 11px; border: 1px solid var(--line); background: var(--panel); color: var(--ink-soft); transition: all .15s ease; letter-spacing: .02em; }
+  .tabbar button .sub { display: block; font-size: 10.5px; font-weight: 600; color: var(--ink-faint); margin-top: 2px; letter-spacing: 0; }
+  .tabbar button[aria-selected="true"] { background: var(--shu); border-color: var(--shu); color: #fff; }
+  .tabbar button[aria-selected="true"] .sub { color: rgba(255,255,255,.8); }
+
+  nav.jump { position: sticky; top: 61px; z-index: 20; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  nav.jump .inner { max-width: 720px; margin: 0 auto; display: flex; gap: 7px; overflow-x: auto; padding: 10px 18px; scrollbar-width: none; }
+  nav.jump .inner::-webkit-scrollbar { display: none; }
+  nav.jump a { flex: 0 0 auto; text-decoration: none; color: var(--ink-soft); font-size: 12.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); white-space: nowrap; transition: all .15s ease; }
+  nav.jump a:hover { color: var(--ink); border-color: var(--ink-faint); }
+  nav.jump a .st { color: var(--gold-bright); letter-spacing: -1px; margin-right: 3px; }
+
+  .view[hidden] { display: none; }
+
+  section { padding: 30px 0 6px; }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .sec-head .stars { font-size: 22px; color: var(--gold-bright); letter-spacing: -2px; }
+  .sec-head h2 { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size: 19px; font-weight: 600; margin: 0; letter-spacing: .05em; }
+  .sec-head .n { margin-left: auto; font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .sec-desc { color: var(--ink-faint); font-size: 13px; margin: 0 0 18px; }
+
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 20px 18px; margin-bottom: 14px; box-shadow: var(--shadow); }
+  .card .top { display: flex; align-items: flex-start; gap: 10px; }
+  .card h3 { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size: 21px; font-weight: 600; margin: 0; letter-spacing: .02em; line-height: 1.3; flex: 1; }
+  .card h3 .yomi { display: block; font-family: inherit; font-size: 12px; color: var(--ink-faint); letter-spacing: .12em; font-weight: 400; margin-top: 3px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 2px; }
+  .chip { font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; letter-spacing: .04em; white-space: nowrap; }
+  .chip.area { background: color-mix(in srgb, var(--shu) 12%, transparent); color: var(--shu); }
+  .chip.new { background: var(--shu); color: #fff; }
+  .chip.diff { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); color: var(--ink-soft); background: transparent; }
+  .chip.diff .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .chip.diff[data-lv="高"] .dot { background: var(--hot); }
+  .chip.diff[data-lv="中"] .dot { background: var(--warn); }
+  .chip.diff[data-lv="低"] .dot { background: var(--good); }
+
+  .meta { margin: 14px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 7px 14px; font-size: 14px; }
+  .meta dt { color: var(--ink-faint); font-size: 12px; font-weight: 600; letter-spacing: .04em; padding-top: 1px; }
+  .meta dd { margin: 0; color: var(--ink); }
+  .meta dd.price { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .meta .req { color: var(--ink-soft); font-size: 12px; }
+
+  .memo { margin: 13px 0 0; font-size: 13px; color: var(--ink-soft); line-height: 1.6; padding-top: 12px; border-top: 1px dashed var(--line); }
+  .flag { color: var(--shu); font-weight: 600; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .actions a { text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--shu); color: var(--shu); background: transparent; transition: all .15s ease; display: inline-flex; align-items: center; gap: 5px; }
+  .actions a:hover { background: var(--shu); color: #fff; }
+  .actions a.phone { border-color: var(--line); color: var(--ink-soft); }
+  .actions a.phone:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .actions a.map { border-color: var(--line); color: var(--ink-soft); }
+  .actions a.map:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .actions .none { font-size: 12.5px; color: var(--ink-faint); padding: 8px 0; }
+
+  .pick { background: linear-gradient(180deg, color-mix(in srgb, var(--shu) 7%, var(--panel)), var(--panel)); border: 1px solid color-mix(in srgb, var(--shu) 25%, var(--line)); border-radius: 16px; padding: 22px 20px; margin-top: 26px; }
+  .pick h2 { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size: 18px; margin: 0 0 4px; letter-spacing: .05em; }
+  .pick .sub { font-size: 12px; color: var(--ink-faint); margin: 0 0 16px; }
+  .pick .row2 { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line-soft); }
+  .pick .row2:first-of-type { border-top: 0; }
+  .pick .row2 .tag { flex: 0 0 auto; font-size: 11px; font-weight: 700; color: var(--shu); align-self: flex-start; padding-top: 2px; min-width: 82px; }
+  .pick .row2 .body { font-size: 13.5px; }
+  .pick .row2 .body b { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-weight: 600; }
+
+  /* ---- Hyakumeiten ---- */
+  .official-cta { text-align: center; margin: 6px 0 16px; }
+  .official-cta a { display: inline-block; text-decoration: none; font-size: 13.5px; font-weight: 700; color: #fff; background: var(--shu); padding: 10px 18px; border-radius: 10px; }
+  .official-cta a:hover { filter: brightness(1.08); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: center; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  .pill { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; letter-spacing: .03em; white-space: nowrap; line-height: 1.5; }
+  .pill.mich { background: color-mix(in srgb, var(--gold) 16%, transparent); color: var(--gold-bright); border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent); }
+  .pill.award { background: color-mix(in srgb, var(--gold) 22%, transparent); color: var(--gold-bright); }
+  .pill.hard { background: color-mix(in srgb, var(--shu) 14%, transparent); color: var(--shu); }
+  .pill.newin { background: transparent; color: var(--good); border: 1px solid color-mix(in srgb, var(--good) 45%, transparent); }
+
+  .area-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .area-head h2 { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size: 17px; font-weight: 600; margin: 0; letter-spacing: .04em; }
+  .area-head .n { margin-left: auto; font-size: 11.5px; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  .list { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+  .row { display: flex; flex-direction: column; align-items: stretch; gap: 9px; padding: 13px 15px; border-top: 1px solid var(--line-soft); }
+  .row:first-child { border-top: 0; }
+  .rmain { display: flex; align-items: center; gap: 10px; }
+  .row .nm { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size: 16px; font-weight: 600; letter-spacing: .01em; }
+  .row .rbadges { margin-left: auto; display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
+  .row.starred { background: color-mix(in srgb, var(--gold) 6%, var(--panel)); }
+  .ract { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .ract a, .ract .rlabel { font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 8px; white-space: nowrap; text-decoration: none; }
+  .ract a.rsv { border: 1px solid var(--shu); color: var(--shu); }
+  .ract a.rsv:hover { background: var(--shu); color: #fff; }
+  .ract a.rtel { border: 1px solid var(--line); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .ract a.rtel:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .ract .rlabel { border: 1px dashed var(--line); color: var(--ink-faint); }
+  .ract a.rmap { border: 1px solid var(--line); color: var(--ink-soft); }
+  .ract a.rmap:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+
+  footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 26px 18px 50px; }
+  footer .note { font-size: 12px; color: var(--ink-faint); line-height: 1.7; max-width: 60ch; margin: 0 auto; }
+  footer .note b { color: var(--ink-soft); }
+  footer a { color: var(--shu); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer .disc { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="kicker">Tokyo Sushi Guide 2026</p>
+  <h1 class="serif">東京の<span class="mark">鮨</span>、名店リスト</h1>
+  <p class="lead">ミシュラン東京2026の星付き＆ビブと、食べログ寿司TOKYO百名店。予約導線・難易度つきの実用ガイド。</p>
+</header>
+
+<div class="tabbar">
+  <div class="inner">
+    <button id="tab-m" aria-selected="true" onclick="showView('m')">ミシュラン 2026<span class="sub">星付き＋ビブ 30軒</span></button>
+    <button id="tab-h" aria-selected="false" onclick="showView('h')">百名店 100<span class="sub">食べログ寿司TOKYO</span></button>
+  </div>
+</div>
+
+<!-- ================= VIEW: MICHELIN ================= -->
+<div class="view" id="view-m">
+  <nav class="jump">
+    <div class="inner">
+      <a href="#s3"><span class="st">★★★</span>三つ星</a>
+      <a href="#s2"><span class="st">★★</span>二つ星</a>
+      <a href="#s1"><span class="st">★</span>一つ星</a>
+      <a href="#bib">ビブグルマン</a>
+      <a href="#pick">編集メモ</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="s3">
+      <div class="sec-head"><span class="stars">★★★</span><h2>三つ星</h2><span class="n">1軒</span></div>
+      <p class="sec-desc">その道のりのすべてを賭ける価値があると評される一軒。</p>
+      <article class="card">
+        <div class="top"><h3 class="serif">青空<span class="yomi">はるたか ／ Harutaka</span></h3></div>
+        <div class="badges"><span class="chip area">銀座</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta">
+          <dt>住所</dt><dd>中央区銀座8-3-1 銀座時傳ビル 6F</dd>
+          <dt>最寄</dt><dd>JR新橋駅 徒歩5分</dd>
+          <dt>価格帯</dt><dd class="price">¥40,000〜49,999<span class="req"> ／ おまかせ（税サ込）</span></dd>
+          <dt>予約</dt><dd class="req">毎月1日に翌々月末まで開放／電話・一休</dd>
+        </dl>
+        <p class="memo">店主・高橋青空氏は「すきやばし次郎」で約12年修業。2024〜2026と3年連続の三つ星。<span class="flag">※読みは「はるたか」。「築地青空三代目」は別店。</span></p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/109616" target="_blank" rel="noopener">一休で予約 ↗</a><a class="phone" href="tel:0335731144">03-3573-1144</a></div>
+      </article>
+    </section>
+
+    <section id="s2">
+      <div class="sec-head"><span class="stars">★★</span><h2>二つ星</h2><span class="n">3軒</span></div>
+      <p class="sec-desc">遠回りしてでも訪れる価値のある卓越した料理。</p>
+      <article class="card">
+        <div class="top"><h3 class="serif">西麻布 鮨 真<span class="yomi">にしあざぶ すし しん ／ Sushi Shin</span></h3></div>
+        <div class="badges"><span class="chip area">西麻布</span><span class="chip new">2026 ★→★★ 昇格</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta">
+          <dt>住所</dt><dd>港区西麻布4-18-20 西麻布CO-HOUSE 1F（日赤通り沿い）</dd>
+          <dt>最寄</dt><dd>広尾駅 徒歩約15分／六本木駅からも徒歩圏</dd>
+          <dt>価格帯</dt><dd class="price">¥33,000〜35,000</dd>
+          <dt>予約</dt><dd class="req">電話・公式・OMAKASE</dd>
+        </dl>
+        <p class="memo">店主・鈴木真太郎氏、2003年創業。2026年版で一つ星から二つ星へ昇格。</p>
+        <div class="actions"><a href="https://omakase.in/r/wl401300" target="_blank" rel="noopener">OMAKASEで予約 ↗</a><a href="http://sushi-shin.com/" target="_blank" rel="noopener">公式サイト ↗</a><a class="phone" href="tel:0354850031">03-5485-0031</a></div>
+      </article>
+      <article class="card">
+        <div class="top"><h3 class="serif">すきやばし次郎 六本木ヒルズ店<span class="yomi">すきやばしじろう ／ Sukiyabashi Jiro Roppongi Hills</span></h3></div>
+        <div class="badges"><span class="chip area">六本木</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta">
+          <dt>住所</dt><dd>港区六本木6-10-1 六本木ヒルズ けやき坂通り 3F</dd>
+          <dt>最寄</dt><dd>六本木駅 徒歩3〜5分（六本木ヒルズ内）</dd>
+          <dt>価格帯</dt><dd class="req">要問い合わせ（各サイト明記なし）</dd>
+          <dt>予約</dt><dd class="req">電話</dd>
+        </dl>
+        <p class="memo">小野二郎氏の次男・小野隆士氏が握る。銀座本店は一般予約を停止しミシュラン掲載外に。本店は16年連続二つ星を維持。<span class="flag">※営業時間・定休は要再確認。</span></p>
+        <div class="actions"><a class="phone" href="tel:0354136626">03-5413-6626</a></div>
+      </article>
+      <article class="card">
+        <div class="top"><h3 class="serif">銀座 鮨 かねさか 本店<span class="yomi">ぎんざ すし かねさか ／ Sushi Kanesaka</span></h3></div>
+        <div class="badges"><span class="chip area">銀座</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta">
+          <dt>住所</dt><dd>中央区銀座8-10-3 三鈴ビル B1F</dd>
+          <dt>最寄</dt><dd>銀座駅 A4出口 徒歩5分／新橋駅 徒歩5分</dd>
+          <dt>価格帯</dt><dd class="price">約 ¥50,000<span class="req"> ／ 時価表記の場合あり</span></dd>
+          <dt>予約</dt><dd class="req">完全予約制・電話／一休に店舗ページあり</dd>
+        </dl>
+        <p class="memo">金坂真次氏がカウンター8席を一人で握る。長く星を維持する名店。<span class="flag">※「30歳以上のご利用に限定」との案内。系列店（パレスホテル東京店等）と混同注意。</span></p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/116677" target="_blank" rel="noopener">一休で確認 ↗</a><a class="phone" href="tel:0355684411">03-5568-4411</a></div>
+      </article>
+    </section>
+
+    <section id="s1">
+      <div class="sec-head"><span class="stars">★</span><h2>一つ星</h2><span class="n">20軒</span></div>
+      <p class="sec-desc">このカテゴリーで高品質な料理。<span style="color:var(--shu);font-weight:600">New</span> は2026年版で新たに星を得た店。</p>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 ゆうき<span class="yomi">すし ゆうき ／ Sushi Yuki</span></h3></div>
+        <div class="badges"><span class="chip area">広尾</span><span class="chip new">New</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>渋谷区広尾5-17-4 1F</dd><dt>最寄</dt><dd>広尾駅 徒歩3分</dd><dt>価格帯</dt><dd class="price">〜¥46,000<span class="req"> ／ 情報にばらつき・要確認</span></dd></dl>
+        <p class="memo">伝説の三つ星「鮨水谷」でNo.2を務めた職人の店。</p>
+        <div class="actions"><a href="https://autoreserve.com/ja/restaurants/xFU3cWfm7YPjBno4EjGJ" target="_blank" rel="noopener">AutoReserveで予約 ↗</a><a class="phone" href="tel:0362770468">03-6277-0468</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 みうら<span class="yomi">すし みうら ／ Sushi Miura</span></h3></div>
+        <div class="badges"><span class="chip area">赤坂</span><span class="chip new">New</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区赤坂6-19-46 フォーチュンマレット赤坂 1F</dd><dt>最寄</dt><dd>赤坂駅 徒歩5〜8分</dd><dt>価格帯</dt><dd class="price">¥20,000〜33,000</dd></dl>
+        <p class="memo">京都料理で修業した親方による、つまみ＋握り。カウンター8席。</p>
+        <div class="actions"><a href="https://sushimiura-japan.com/reserve" target="_blank" rel="noopener">公式で予約 ↗</a><a href="https://www.tablecheck.com/en/shops/sushi-miura/reserve" target="_blank" rel="noopener">TableCheck ↗</a><a class="phone" href="tel:09088940020">090-8894-0020</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 大矢<span class="yomi">すし おおや ／ Sushi Oya</span></h3></div>
+        <div class="badges"><span class="chip area">神楽坂</span><span class="chip new">New</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>新宿区袋町3-6 神楽坂センタービルANNEX 3F</dd><dt>最寄</dt><dd>神楽坂駅／牛込神楽坂駅 徒歩5分圏</dd><dt>価格帯</dt><dd class="price">約 ¥35,000<span class="req"> ＋サービス料10%</span></dd></dl>
+        <p class="memo">三つ星「鮨よしたけ」出身。2023年5月開業、赤酢・白酢を使い分け。<span class="flag">※「神楽坂すしOmakase」は別店。</span></p>
+        <div class="actions"><a href="https://sushioya.com/" target="_blank" rel="noopener">公式→OMAKASE ↗</a><a class="phone" href="tel:0362281868">03-6228-1868</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">匠 達広<span class="yomi">たくみ たつひろ ／ Takumi Tatsuhiro</span></h3></div>
+        <div class="badges"><span class="chip area">新宿御苑前</span><span class="chip new">New</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>新宿区新宿1-11-7 サンサーラ第五御苑ビル 1F</dd><dt>最寄</dt><dd>新宿御苑前駅 2番出口 徒歩3分</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd></dl>
+        <p class="memo">四ツ谷「すし匠」の系譜。つまみと握りを交互に出すおまかせのみ。</p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/109338" target="_blank" rel="noopener">一休で予約 ↗</a><a href="https://takumi-tatsuhiro.foodre.jp/" target="_blank" rel="noopener">公式サイト ↗</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 田中<span class="yomi">すし たなか ／ Sushi Tanaka</span></h3></div>
+        <div class="badges"><span class="chip area">白金高輪</span><span class="chip new">New</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区南麻布2-7-23 マーキュリー南麻布 1F</dd><dt>最寄</dt><dd>白金高輪駅 徒歩7〜8分</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd><dt>予約</dt><dd class="req">毎月1日にネット予約開始／電話</dd></dl>
+        <p class="memo">天草の鮮魚店が魚を供給する江戸前。2025セレクテッド→2026で一つ星昇格。お値打ち感で人気。</p>
+        <div class="actions"><a href="https://tabelog.com/tokyo/A1316/A131602/13293885/" target="_blank" rel="noopener">食べログ ↗</a><a class="phone" href="tel:0368093522">03-6809-3522</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">奥<span class="yomi">おく ／ Oku</span></h3></div>
+        <div class="badges"><span class="chip area">浅草</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>台東区浅草3-42-12 浅草ダイカンプラザ天仁ビル 1F</dd><dt>最寄</dt><dd>浅草駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd></dl>
+        <p class="memo">食べログ3.96、寿司百名店2025選出。オンライン予約中心。</p>
+        <div class="actions"><a href="https://omakase.in/en/r/ys131487" target="_blank" rel="noopener">OMAKASEで予約 ↗</a><a class="phone" href="tel:0368024474">03-6802-4474</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 桂太<span class="yomi">すし けいた ／ Sushi Keita</span></h3></div>
+        <div class="badges"><span class="chip area">築地</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta"><dt>住所</dt><dd>中央区築地6-6-4</dd><dt>最寄</dt><dd>築地駅 徒歩圏</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd><dt>予約</dt><dd class="req">電話のみ・毎月1日に翌月分</dd></dl>
+        <p class="memo">檜のカウンター8席。寿司百名店2025。電話のみで難易度高め。</p>
+        <div class="actions"><a class="phone" href="tel:0362642234">03-6264-2234</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">広尾 石阪<span class="yomi">ひろお いしざか ／ Hiroo Ishizaka</span></h3></div>
+        <div class="badges"><span class="chip area">広尾</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>渋谷区広尾5-19-1 HIROO VILLAGE 2F</dd><dt>最寄</dt><dd>広尾駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd><dt>予約</dt><dd class="req">完全予約制・電話／予約サイト</dd></dl>
+        <p class="memo">2022年7月開業。ウォールナット材のカウンター8席。</p>
+        <div class="actions"><a href="https://tabelog.com/tokyo/A1307/A130703/13275727/" target="_blank" rel="noopener">食べログ ↗</a><a class="phone" href="tel:08023927910">080-2392-7910</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 はしもと<span class="yomi">すし はしもと ／ Sushi Hashimoto</span></h3></div>
+        <div class="badges"><span class="chip area">新富町</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta"><dt>住所</dt><dd>中央区新富1-8-2 グランディール銀座イースト 1F</dd><dt>最寄</dt><dd>新富町駅／八丁堀駅 徒歩圏</dd><dt>価格帯</dt><dd class="price">¥30,000〜39,999</dd><dt>予約</dt><dd class="req">毎月5日にOMAKASEで受付（約2ヶ月先まで）</dd></dl>
+        <p class="memo">食べログ4.48、Tabelog Award 2026 Silver。赤酢の江戸前握り。定休：火・水。</p>
+        <div class="actions"><a href="https://omakase.in/en/r/gw622283" target="_blank" rel="noopener">OMAKASEで予約 ↗</a><a href="https://restaurant.ikyu.com/120275" target="_blank" rel="noopener">一休 ↗</a><a class="phone" href="tel:0355415578">03-5541-5578</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 一條<span class="yomi">すし いちじょう ／ Sushi Ichijo</span></h3></div>
+        <div class="badges"><span class="chip area">馬喰横山</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>中央区東日本橋3-1-3 奥田ビル 1F</dd><dt>最寄</dt><dd>東日本橋駅 徒歩2分／馬喰横山駅 徒歩3分</dd><dt>価格帯</dt><dd class="price">¥29,700<span class="req"> ／ ディナーおまかせ（税込）</span></dd></dl>
+        <p class="memo">2015年開業、裏路地の隠れ家。カウンター8席。定休：水・日・祝前日。</p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/118021" target="_blank" rel="noopener">一休で予約 ↗</a><a class="phone" href="tel:0366611335">03-6661-1335</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">江戸前鮨 英<span class="yomi">えどまえずし はなぶさ ／ Hanabusa</span></h3></div>
+        <div class="badges"><span class="chip area">赤坂</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区赤坂9-1-7 赤坂レジデンシャルホテル 102</dd><dt>最寄</dt><dd>六本木駅</dd><dt>価格帯</dt><dd class="price">¥30,000〜<span class="req"> ／ 情報に幅あり</span></dd><dt>予約</dt><dd class="req">夜はおまかせのみ・土曜休</dd></dl>
+        <p class="memo">店主は老舗「美家古鮨」で23年修業し2015年独立。<span class="flag">※読みは「はなぶさ」。</span></p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/112561" target="_blank" rel="noopener">一休で予約 ↗</a><a href="https://akasaka-hanabusa.com/" target="_blank" rel="noopener">公式サイト ↗</a><a class="phone" href="tel:0334781010">03-3478-1010</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 まつうら<span class="yomi">すし まつうら ／ Sushi Matsuura</span></h3></div>
+        <div class="badges"><span class="chip area">白金高輪</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区白金5-7-8 ウイング綱島 1F</dd><dt>最寄</dt><dd>白金高輪駅 徒歩8分</dd><dt>価格帯</dt><dd class="price">¥30,000〜39,999<span class="req"> ／ 昼は2万円台</span></dd><dt>予約</dt><dd class="req">完全予約制・一休／OMAKASE</dd></dl>
+        <p class="memo">銀座おのでら出身の松浦修大将が2019年独立。8席。「次の予約は約1年待ち」との報告も。</p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/122622" target="_blank" rel="noopener">一休で予約 ↗</a><a class="phone" href="tel:0364502557">03-6450-2557</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 こじま<span class="yomi">すし こじま ／ Sushi Kojima</span></h3></div>
+        <div class="badges"><span class="chip area">銀座</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>中央区銀座7-3-8 銀座七丁目プレイス 5F</dd><dt>最寄</dt><dd>銀座駅 B10出口 徒歩5分／新橋駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">約 ¥40,000<span class="req"> ／ 実レビュー基準</span></dd></dl>
+        <p class="memo">パレスホテル東京で鮨料理長を務めた店主が独立。赤酢＋米酢のブレンドシャリ。<span class="flag">※「鮨おじま」は別店。</span></p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/114613" target="_blank" rel="noopener">一休で予約 ↗</a><a class="phone" href="tel:0362646464">03-6264-6464</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 龍次郎<span class="yomi">すし りゅうじろう ／ Sushi Ryujiro</span></h3></div>
+        <div class="badges"><span class="chip area">外苑前</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区南青山2-11-11 ARISTO南青山 1F</dd><dt>最寄</dt><dd>外苑前駅 徒歩4分／青山一丁目駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd></dl>
+        <p class="memo">2019年開業。木曽檜のL字カウンター11席＋個室。5年連続一つ星。</p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/114446" target="_blank" rel="noopener">一休で予約 ↗</a><a class="phone" href="tel:0363845865">03-6384-5865</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 将司<span class="yomi">すし まさし ／ Sushi Masashi</span></h3></div>
+        <div class="badges"><span class="chip area">外苑前</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区北青山2-9-9 外苑いちょうの杜 7F</dd><dt>最寄</dt><dd>外苑前駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥30,000<span class="req"> ／ 昼 ¥28,000</span></dd></dl>
+        <p class="memo">大将は山口将司氏。4年以上連続で一つ星。<span class="flag">※移転済み、現住所の新ページで確認を。</span></p>
+        <div class="actions"><a href="https://sushimasashi.tokyo/" target="_blank" rel="noopener">公式サイト ↗</a><a href="https://restaurant.ikyu.com/115718" target="_blank" rel="noopener">一休 ↗</a><a class="phone" href="tel:0363845526">03-6384-5526</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">佐野鮨<span class="yomi">さのすし ／ Sano Sushi</span></h3></div>
+        <div class="badges"><span class="chip area">芝公園</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区芝2-18-9 1F</dd><dt>最寄</dt><dd>芝公園駅 A1出口 徒歩2分</dd><dt>価格帯</dt><dd class="price">¥20,000〜29,999</dd></dl>
+        <p class="memo">2023年開業の7席店。フジタ水産のまぐろが売り。食べログ100名店（鮨）2025・3.99。</p>
+        <div class="actions"><a href="https://restaurant.ikyu.com/124904" target="_blank" rel="noopener">一休で予約 ↗</a><a href="https://res-reserve.com/en/restaurants/sanosushi2023" target="_blank" rel="noopener">公式予約 ↗</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">西麻布 拓<span class="yomi">にしあざぶ たく ／ Nishiazabu Taku</span></h3></div>
+        <div class="badges"><span class="chip area">西麻布</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区西麻布2-11-5 カパルア西麻布 1F</dd><dt>最寄</dt><dd>乃木坂駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥30,000〜39,999</dd><dt>予約</dt><dd class="req">リクエスト予約制</dd></dl>
+        <p class="memo">大将は「久兵衛」等を経て独立。つまみと握りを交互に、ワインペアリングにも強み。<span class="flag">※二つ星は別店「鮨しん」。拓は一つ星。</span></p>
+        <div class="actions"><a href="https://nishiazabu-taku.com/reserve" target="_blank" rel="noopener">公式で予約 ↗</a><a href="https://omakaseje.com/restaurants/yq954993" target="_blank" rel="noopener">OMAKASE ↗</a><a class="phone" href="tel:0357744372">03-5774-4372</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨処 喜楽<span class="yomi">すしどころ きらく ／ Kiraku</span></h3></div>
+        <div class="badges"><span class="chip area">経堂</span><span class="chip diff" data-lv="低"><span class="dot"></span>予約難易度 低〜中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>世田谷区・経堂 農大通り商店街沿い<span class="req">（番地は要確認）</span></dd><dt>最寄</dt><dd>経堂駅 至近</dd><dt>価格帯</dt><dd class="price">¥12,100<span class="req"> ／ おまかせ（税サ込）</span></dd><dt>予約</dt><dd class="req">翌月分を受付・ネット予約多数</dd></dl>
+        <p class="memo">1937年創業の老舗、三代目・太田龍人氏。星付きの中では最も手頃で取りやすい部類。</p>
+        <div class="actions"><a href="https://www.pocket-concierge.jp/en/restaurants/244625" target="_blank" rel="noopener">Pocket Concierge ↗</a><a href="https://www.hotpepper.jp/strJ000246448/" target="_blank" rel="noopener">ホットペッパー ↗</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">地蔵鮓<span class="yomi">じぞうずし ／ Jizozushi</span></h3></div>
+        <div class="badges"><span class="chip area">白金台</span><span class="chip diff" data-lv="高"><span class="dot"></span>予約難易度 高</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区白金台3-18-5 NKビル 2F</dd><dt>最寄</dt><dd>目黒駅／白金台駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥26,000〜39,999</dd><dt>予約</dt><dd class="req">電話のみ・木金土の夜のみ・1日2組限定</dd></dl>
+        <p class="memo">カウンター6席、最終入店19:30、2名から。赤酢＋熟成ネタ。当日キャンセル不可。営業日・席数が極端に少なく最難関級。</p>
+        <div class="actions"><a href="https://jizozushi-meguro.com/" target="_blank" rel="noopener">公式サイト ↗</a><a class="phone" href="tel:0334455301">03-3445-5301</a></div>
+      </article>
+    </section>
+
+    <section id="bib">
+      <div class="sec-head"><span class="stars" style="color:var(--shu);font-size:15px;letter-spacing:0">◗</span><h2>ビブグルマン</h2><span class="n">6軒</span></div>
+      <p class="sec-desc">価格以上の満足感。カジュアルに鮨を楽しめるコスパ枠。</p>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">すし処 志げる<span class="yomi">すしどころ しげる ／ Shigeru</span></h3></div>
+        <div class="badges"><span class="chip area">曙橋</span><span class="chip diff" data-lv="低"><span class="dot"></span>予約難易度 低</span></div>
+        <dl class="meta"><dt>住所</dt><dd>新宿区舟町15 荒川ビル 1F</dd><dt>最寄</dt><dd>曙橋駅 徒歩1分</dd><dt>価格帯</dt><dd class="price">¥8,000〜9,999<span class="req"> ／ おまかせ ¥6,500・握りセット ¥3,000</span></dd><dt>予約</dt><dd class="req">電話が基本</dd></dl>
+        <p class="memo">江戸前、カウンター7席の小箱。コスパ良でビブ掲載。</p>
+        <div class="actions"><a class="phone" href="tel:0332261588">03-3226-1588</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">立喰 鮨となり<span class="yomi">たちぐい すしとなり ／ Sushi Tonari</span></h3></div>
+        <div class="badges"><span class="chip area">麻布十番</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区麻布十番2-8-7 M2K Holding BLD. 2F</dd><dt>最寄</dt><dd>麻布十番駅 7番出口 徒歩2分</dd><dt>価格帯</dt><dd class="price">¥8,000〜9,999<span class="req"> ／ おまかせ並 ¥6,600・上 ¥9,900＋追加</span></dd><dt>予約</dt><dd class="req">食べログ予約・LINE・電話／60分交代制</dd></dl>
+        <p class="memo">立ち食い。百名店「麻布十番 秦野よしき」が運営。2024〜2026連続ビブ。</p>
+        <div class="actions"><a class="phone" href="tel:0364539950">03-6453-9950</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">立食い鮨 鮨川<span class="yomi">たちぐいずし すしかわ ／ Sushikawa</span></h3></div>
+        <div class="badges"><span class="chip area">笹塚</span><span class="chip diff" data-lv="低"><span class="dot"></span>予約難易度 低</span></div>
+        <dl class="meta"><dt>住所</dt><dd>渋谷区笹塚1-62-6 プライムブリス 1F<span class="req">（ビル名は要現地確認）</span></dd><dt>最寄</dt><dd>代田橋駅 徒歩5分／笹塚駅 徒歩10分</dd><dt>価格帯</dt><dd class="price">¥5,000〜9,999<span class="req"> ／ コース ¥4,000〜11,200</span></dd><dt>予約</dt><dd class="req">TableCheck・電話</dd></dl>
+        <p class="memo">立ち食いで一貫ずつ握る江戸前を気軽に。</p>
+        <div class="actions"><a href="https://www.tablecheck.com/en/sushikawa-tachigui" target="_blank" rel="noopener">TableCheck ↗</a><a class="phone" href="tel:05058681141">050-5868-1141</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">松野寿し<span class="yomi">まつのずし ／ Matsunozushi</span></h3></div>
+        <div class="badges"><span class="chip area">椎名町</span><span class="chip diff" data-lv="低"><span class="dot"></span>予約難易度 低</span></div>
+        <dl class="meta"><dt>住所</dt><dd>豊島区南長崎2-16-12</dd><dt>最寄</dt><dd>椎名町駅 徒歩5分</dd><dt>価格帯</dt><dd class="price">¥7,700<span class="req"> ／ つまみ付おまかせ</span></dd><dt>予約</dt><dd class="req">ネット予約・電話／夜は2交代制</dd></dl>
+        <p class="memo">1969年創業の町場の老舗、二代目・野呂敏充親方。一貫一貫に手仕事。</p>
+        <div class="actions"><span class="none">電話番号は各予約サイトで要確認</span></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 与志乃<span class="yomi">すし よしの ／ Yoshino</span></h3></div>
+        <div class="badges"><span class="chip area">中野坂上</span><span class="chip diff" data-lv="低"><span class="dot"></span>予約難易度 低</span></div>
+        <dl class="meta"><dt>住所</dt><dd>中野区中央2-30-2 Sビルディング B1F</dd><dt>最寄</dt><dd>中野坂上駅 徒歩3分</dd><dt>価格帯</dt><dd class="price">昼 ¥1,000〜／夜 ¥10,000〜14,999</dd><dt>予約</dt><dd class="req">電話</dd></dl>
+        <p class="memo">赤酢シャリの正統江戸前。京橋「与志乃 本店」の分店で、三代で営む老舗。2015〜2026連続ビブ。</p>
+        <div class="actions"><a class="phone" href="tel:0333718426">03-3371-8426</a></div>
+      </article>
+
+      <article class="card">
+        <div class="top"><h3 class="serif">鮨 三か田<span class="yomi">すし みかた ／ Sushi Mikata</span></h3></div>
+        <div class="badges"><span class="chip area">田町</span><span class="chip diff" data-lv="中"><span class="dot"></span>予約難易度 中</span></div>
+        <dl class="meta"><dt>住所</dt><dd>港区三田4-1-4</dd><dt>最寄</dt><dd>三田駅 A3出口 徒歩8分／田町駅 徒歩10分</dd><dt>価格帯</dt><dd class="price">¥6,000〜9,999</dd><dt>予約</dt><dd class="req">TableCheck（2026年4月以降は一本化との情報）</dd></dl>
+        <p class="memo">高級感ある空間で立ち食いスタイル。オーダーはiPad、キャッシュレス。ネタの質に対する価格の良さで評価。</p>
+        <div class="actions"><a href="https://www.tablecheck.com/en/sushimikata" target="_blank" rel="noopener">TableCheck ↗</a><a class="phone" href="tel:05055908333">050-5590-8333</a></div>
+      </article>
+    </section>
+
+    <div class="pick" id="pick">
+      <h2 class="serif">編集メモ — どこから狙う？</h2>
+      <p class="sub">予約難易度・価格・体験の性格からの、目的別の入り口。</p>
+      <div class="row2"><div class="tag">はじめの一軒</div><div class="body"><b>鮨 みうら</b>・<b>匠 達広</b>・<b>鮨 龍次郎</b> — 一つ星の中でも2〜3万円台で、ネット予約の導線がはっきりしている。星付き未経験ならここから。</div></div>
+      <div class="row2"><div class="tag">コスパで攻める</div><div class="body"><b>鮨処 喜楽</b>（星付きで約¥12,100）と、ビブの <b>立喰 鮨となり</b>・<b>鮨 三か田</b>。立ち食い系は一人でもふらっと入りやすい。</div></div>
+      <div class="row2"><div class="tag">記念日・本気</div><div class="body"><b>青空</b>（★★★）か <b>かねさか</b>（★★）。ただし予約は開放日に取りに行く前提。<b>鮨 はしもと</b> も予約困難だが評価は最高峰。</div></div>
+      <div class="row2"><div class="tag">今年の話題（New）</div><div class="body">2026新星の <b>鮨 ゆうき</b>・<b>鮨 田中</b> は名店出身×お値打ちで狙い目。ただし昇格直後で今後さらに取りにくくなる可能性。</div></div>
+      <div class="row2"><div class="tag">難易度は覚悟</div><div class="body"><b>地蔵鮓</b>（木金土のみ・1日2組）、<b>鮨 まつうら</b>（約1年待ち）、<b>鮨 桂太</b>（電話のみ）は、行けたら幸運の部類。</div></div>
+    </div>
+  </main>
+</div>
+
+<!-- ================= VIEW: HYAKUMEITEN ================= -->
+<div class="view" id="view-h" hidden>
+  <nav class="jump">
+    <div class="inner">
+      <a href="#a1">銀座・築地</a>
+      <a href="#a2">新橋・日比谷</a>
+      <a href="#a3">麻布・六本木・赤坂</a>
+      <a href="#a4">白金・高輪</a>
+      <a href="#a5">四ツ谷・神楽坂</a>
+      <a href="#a6">日本橋・浅草</a>
+      <a href="#a7">表参道・広尾</a>
+      <a href="#a8">中目黒・品川</a>
+      <a href="#a9">世田谷ほか</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <p style="text-align:center;color:var(--ink-soft);font-size:13.5px;margin:26px auto 4px;max-width:46ch">食べログ寿司TOKYO百名店の東京100店。各店に電話・予約導線つき。<b style="color:var(--shu)">予約困難</b>や会員制の店は取りにくさをそのまま表示しています。</p>
+    <div class="official-cta"><a href="https://award.tabelog.com/hyakumeiten/sushi_tokyo/2025" target="_blank" rel="noopener">公式の全100店ページを開く ↗</a></div>
+    <div class="legend">
+      <span><b class="pill mich">ミシュラン★</b> 2026で星</span>
+      <span><b class="pill hard">予約困難</b> 会員制/紹介制など</span>
+      <span><b class="pill newin">New</b> 2025初選出</span>
+    </div>
+
+    <section id="a1">
+      <div class="area-head"><h2 class="serif">銀座・東銀座・新富町・築地</h2><span class="n">25軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">きよ田 離れ</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/116619" target="_blank" rel="noopener">一休 ↗</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 さえ喜</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/117420" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0332890818">03-3289-0818</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">はっこく</span></div><div class="ract"><a class="rsv" href="https://www.tablecheck.com/en/hakkoku" target="_blank" rel="noopener">TableCheck ↗</a><a class="rtel" href="tel:0362806555">03-6280-6555</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すきやばし次郎（銀座本店）</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><span class="rlabel">一般予約なし（コンシェルジュ経由）</span><a class="rtel" href="tel:0335353600">03-3535-3600</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 あらい</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/109405" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0362645855">03-6264-5855</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">きよ田</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/113776" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0335724854">03-3572-4854</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 竜介</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/105901" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0335721530">03-3572-1530</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨竹</span></div><div class="ract"><span class="rlabel">電話のみ</span><a class="rtel" href="tel:0362285007">03-6228-5007</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 太一</span></div><div class="ract"><span class="rlabel">電話中心</span><a class="rtel" href="tel:0335737222">03-3573-7222</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">さわ田</span><span class="rbadges"><b class="pill award">Award Gold</b></span></div><div class="ract"><span class="rlabel">完全予約制・電話</span><a class="rtel" href="tel:0335714711">03-3571-4711</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 いしやま</span></div><div class="ract"><a class="rsv" href="https://www.tablecheck.com/en/shops/sushiishiyama/reserve" target="_blank" rel="noopener">TableCheck ↗</a><a class="rtel" href="tel:0335383969">03-3538-3969</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 鈴木</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">OMAKASE</span><a class="rtel" href="tel:0355376868">03-5537-6868</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">木挽町 とも樹</span></div><div class="ract"><span class="rlabel">電話・一休</span><a class="rtel" href="tel:0355503401">03-5550-3401</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">寿司 健</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">OMAKASE / 一休</span><a class="rtel" href="tel:0335757880">03-3575-7880</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 一幸</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">電話中心</span><a class="rtel" href="tel:0362643388">03-6264-3388</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">銀座 鮨 かねさか 本店</span><span class="rbadges"><b class="pill mich">ミシュラン★★</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/116677" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0355684411">03-5568-4411</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すし家 一柳</span></div><div class="ract"><span class="rlabel">電話</span><a class="rtel" href="tel:0335627890">03-3562-7890</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 由う</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">一休 / 食べログ予約</span><a class="rtel" href="tel:0355241134">03-5524-1134</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 たかはし</span></div><div class="ract"><a class="rsv" href="https://yoyaku.toreta.in/sushitakahashi" target="_blank" rel="noopener">ネット予約 ↗</a><a class="rtel" href="tel:0335616503">03-3561-6503</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">鮨 はしもと</span><span class="rbadges"><b class="pill mich">ミシュラン★</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/en/r/gw622283" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0355415578">03-5541-5578</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 美幸</span></div><div class="ract"><span class="rlabel">OMAKASE（電話は本店転送）</span></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">銀座いち分</span></div><div class="ract"><span class="rlabel">ネット予約のみ（一休/Pocket Concierge）</span></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">佐たけ</span></div><div class="ract"><span class="rlabel">一休 / 食べログ予約</span><a class="rtel" href="tel:0335457775">03-3545-7775</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">鮨 桂太</span><span class="rbadges"><b class="pill mich">ミシュラン★</b></span></div><div class="ract"><span class="rlabel">電話のみ（毎月1日）</span><a class="rtel" href="tel:0362642234">03-6264-2234</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨処 やまと</span></div><div class="ract"><span class="rlabel">一休 / 食べログ予約</span><a class="rtel" href="tel:0335436311">03-3543-6311</a></div></div>
+      </div>
+    </section>
+
+    <section id="a2">
+      <div class="area-head"><h2 class="serif">新橋・浜松町・大門・神谷町・日比谷</h2><span class="n">10軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">小笹寿し（新橋）</span></div><div class="ract"><span class="rlabel">電話中心</span><a class="rtel" href="tel:0332892227">03-3289-2227</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 よしたけ</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><span class="rlabel">OMAKASE・電話</span><a class="rtel" href="tel:0362537331">03-6253-7331</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">青空（はるたか）</span><span class="rbadges"><b class="pill mich">ミシュラン★★★</b><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/109616" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0335731144">03-3573-1144</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">新ばし しみづ</span></div><div class="ract"><span class="rlabel">電話中心</span><a class="rtel" href="tel:0335915763">03-3591-5763</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">新橋鶴八</span></div><div class="ract"><span class="rlabel">電話中心</span><a class="rtel" href="tel:0362066886">03-6206-6886</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すし処 宮葉</span></div><div class="ract"><span class="rlabel">電話・一休</span><a class="rtel" href="tel:0334313880">03-3431-3880</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 浩也</span></div><div class="ract"><span class="rlabel">食べログ予約・一休</span><a class="rtel" href="tel:0364320593">03-6432-0593</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">寺子屋 すし匠</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">電話・ネット予約</span><a class="rtel" href="tel:0364501023">03-6450-1023</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 さいとう 麻布台</span><span class="rbadges"><b class="pill hard">予約困難</b><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">紹介制中心・一般予約なし</span></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 なんば 日比谷</span><span class="rbadges"><b class="pill award">Award Silver</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/119197" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0362733334">03-6273-3334</a></div></div>
+      </div>
+    </section>
+
+    <section id="a3">
+      <div class="area-head"><h2 class="serif">麻布・六本木・赤坂・赤羽橋・御成門</h2><span class="n">18軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">鮨しゅんじ</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/fg915340" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0364345021">03-6434-5021</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮓 ふじなが</span><span class="rbadges"><b class="pill hard">会員制</b></span></div><div class="ract"><span class="rlabel">会員制（新規停止）</span><a class="rtel" href="tel:0364353522">03-6435-3522</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 めい乃</span><span class="rbadges"><b class="pill award">Award Silver</b></span></div><div class="ract"><span class="rlabel">ネット予約（ヒトサラ/食べログ）</span></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">麻布十番 秦野よしき</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/113542" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0368094250">03-6809-4250</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">江戸前鮓 すし通</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/113082" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0334042622">03-3404-2622</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮓 村瀬</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/109356" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0334795240">03-3479-5240</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 佐がわ</span><span class="rbadges"><b class="pill hard">会員制</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/154122" target="_blank" rel="noopener">一休（一部） ↗</a><a class="rtel" href="tel:0364472525">03-6447-2525</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 きのした</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">完全予約制・電話</span><a class="rtel" href="tel:0364347353">03-6434-7353</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">すきやばし次郎 六本木ヒルズ店</span><span class="rbadges"><b class="pill mich">ミシュラン★★</b></span></div><div class="ract"><span class="rlabel">電話</span><a class="rtel" href="tel:0354136626">03-5413-6626</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 さいとう</span><span class="rbadges"><b class="pill hard">会員制</b></span></div><div class="ract"><span class="rlabel">会員制・一般予約不可</span><a class="rtel" href="tel:0335894412">03-3589-4412</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">あら輝</span><span class="rbadges"><b class="pill hard">予約困難</b><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">予約困難・電話中心</span><a class="rtel" href="tel:0368695525">03-6869-5525</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 はしぐち</span></div><div class="ract"><span class="rlabel">電話中心</span><a class="rtel" href="tel:0334783588">03-3478-3588</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">きざ㐂</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/117103" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0368074110">03-6807-4110</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すし匠 齋藤</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/109357" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0335056380">03-3505-6380</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すが弥</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/114027" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0362309545">03-6230-9545</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">東麻布 天本</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/en/r/hc778124" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0368852274">03-6885-2274</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">冨所</span></div><div class="ract"><a class="rsv" href="https://www.tablecheck.com/en/tomidokoro" target="_blank" rel="noopener">TableCheck ↗</a><a class="rtel" href="tel:0368760646">03-6876-0646</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">佐野鮨</span><span class="rbadges"><b class="pill mich">ミシュラン★</b><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/124904" target="_blank" rel="noopener">一休 ↗</a></div></div>
+      </div>
+    </section>
+
+    <section id="a4">
+      <div class="area-head"><h2 class="serif">白金・高輪・港区</h2><span class="n">6軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">島津</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><span class="rlabel">OMAKASE</span><a class="rtel" href="tel:0367217727">03-6721-7727</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">いちかわ</span></div><div class="ract"><span class="rlabel">ネット予約（食べログ）・電話非公開</span></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">鮨 まつうら</span><span class="rbadges"><b class="pill mich">ミシュラン★</b><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/122622" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0364502557">03-6450-2557</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 いまむら</span></div><div class="ract"><span class="rlabel">電話のみ</span><a class="rtel" href="tel:0357893637">03-5789-3637</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 梢</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/120205" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:08065196623">080-6519-6623</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すし 田いら</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/124032" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0367892280">03-6789-2280</a></div></div>
+      </div>
+    </section>
+
+    <section id="a5">
+      <div class="area-head"><h2 class="serif">四ツ谷・永田町・半蔵門・神楽坂</h2><span class="n">7軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">三谷</span><span class="rbadges"><b class="pill award">Award Silver</b><b class="pill hard">予約困難</b></span></div><div class="ract"><span class="rlabel">一般予約なし（数年待ち）</span></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すし匠</span></div><div class="ract"><span class="rlabel">電話のみ（毎月1日10時）</span><a class="rtel" href="tel:0333516387">03-3351-6387</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 やすみつ</span></div><div class="ract"><a class="rsv" href="https://www.pocket-concierge.jp/en/restaurants/243873" target="_blank" rel="noopener">Pocket Concierge ↗</a><a class="rtel" href="tel:0333513440">03-3351-3440</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">紀尾井町 三谷</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/107142" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0362569566">03-6256-9566</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">紀尾井町 三谷 別邸</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/122438" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0362569881">03-6256-9881</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 みずかみ</span></div><div class="ract"><span class="rlabel">電話のみ</span><a class="rtel" href="tel:0332300326">03-3230-0326</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">波濤</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/114999" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:05031385225">050-3138-5225</a></div></div>
+      </div>
+    </section>
+
+    <section id="a6">
+      <div class="area-head"><h2 class="serif">東京駅・日本橋・水天宮前・浅草・向島</h2><span class="n">6軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">千葉たかおか</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://www.tablecheck.com/ja/shops/sushi-takaoka/reserve" target="_blank" rel="noopener">TableCheck ↗</a><a class="rtel" href="tel:08097125544">080-9712-5544</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">日本橋蛎殻町 すぎた</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/106754" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0336693855">03-3669-3855</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">高柿の鮨</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/121967" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0362310923">03-6231-0923</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">紀文寿司</span></div><div class="ract"><a class="rsv" href="https://www.hotpepper.jp/strJ000126526/" target="_blank" rel="noopener">ホットペッパー ↗</a><a class="rtel" href="tel:0338410984">03-3841-0984</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">鮨 奥</span><span class="rbadges"><b class="pill mich">ミシュラン★</b><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/en/r/ys131487" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0368024474">03-6802-4474</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">うを徳</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/112870" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0336131793">03-3613-1793</a></div></div>
+      </div>
+    </section>
+
+    <section id="a7">
+      <div class="area-head"><h2 class="serif">表参道・青山・外苑前・恵比寿・広尾・渋谷</h2><span class="n">15軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 あお</span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/ut138135" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0364505235">03-6450-5235</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 ます田</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/gt442916" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0364389179">03-6438-9179</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">くろ﨑</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/xd492744" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0364554596">03-6455-4596</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">匠 進吾</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/107809" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0364340074">03-6434-0074</a></div></div>
+        <div class="row starred"><div class="rmain"><span class="nm serif">鮨 龍次郎</span><span class="rbadges"><b class="pill mich">ミシュラン★</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/114446" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0363845865">03-6384-5865</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">海味</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/107938" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0334013368">03-3401-3368</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">恵比寿 えんどう</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/112071" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0363031152">03-6303-1152</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 心白</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/113433" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0367217880">03-6721-7880</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">すし 良月</span></div><div class="ract"><a class="rsv" href="https://gguh800.gorp.jp/" target="_blank" rel="noopener">公式 ↗</a><a class="rtel" href="tel:05033900121">050-3390-0121</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 陸</span></div><div class="ract"><span class="rlabel">完全予約制・電話</span><a class="rtel" href="tel:07083618161">070-8361-8161</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 在</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/112445" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0334461134">03-3446-1134</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 大地</span><span class="rbadges"><b class="pill hard">会員制</b></span></div><div class="ract"><a class="rsv" href="https://shokuoku.com/restaurant/?rstid=34" target="_blank" rel="noopener">食オク ↗</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">あじゅう田</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/117151" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0368047095">03-6804-7095</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 利﨑</span></div><div class="ract"><a class="rsv" href="https://yoyaku.toreta.in/susirizaki" target="_blank" rel="noopener">ネット予約 ↗</a><a class="rtel" href="tel:0357388293">03-5738-8293</a></div></div>
+      </div>
+    </section>
+
+    <section id="a8">
+      <div class="area-head"><h2 class="serif">中目黒・目黒・品川方面</h2><span class="n">6軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 尚充</span><span class="rbadges"><b class="pill award">Award Silver</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/tm817004" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0337126999">03-3712-6999</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 つぼみ</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/116334" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0364510903">03-6451-0903</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">らんまる</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/113295" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0357341461">03-5734-1461</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">不動前 すし 岩澤</span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/109457" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0354368338">03-5436-8338</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">戸越銀座 鮨 ばんど</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://restaurant.ikyu.com/117059" target="_blank" rel="noopener">一休 ↗</a><a class="rtel" href="tel:0364318668">03-6431-8668</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">初音鮨</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://www.tablecheck.com/ja/shops/hatsunezushi/reserve" target="_blank" rel="noopener">TableCheck ↗</a><a class="rtel" href="tel:0337312403">03-3731-2403</a></div></div>
+      </div>
+    </section>
+
+    <section id="a9">
+      <div class="area-head"><h2 class="serif">世田谷・杉並・板橋・三鷹ほか</h2><span class="n">7軒</span></div>
+      <div class="list">
+        <div class="row"><div class="rmain"><span class="nm serif">すし 喜邑</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/km291999" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0337076355">03-3707-6355</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">小笹寿し（下北沢）</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><span class="rlabel">予約不可・当日並び</span><a class="rtel" href="tel:0334130488">03-3413-0488</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 西崎</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://pocket-concierge.jp/en/restaurants/245317" target="_blank" rel="noopener">Pocket Concierge ↗</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 しゅん輔 阿佐ヶ谷</span></div><div class="ract"><span class="rlabel">電話・公式予約</span><a class="rtel" href="tel:0333913118">03-3391-3118</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 波やし</span><span class="rbadges"><b class="pill hard">予約困難</b></span></div><div class="ract"><span class="rlabel">電話のみ（数年待ち）</span><a class="rtel" href="tel:0333375566">03-3337-5566</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">さき田</span></div><div class="ract"><a class="rsv" href="https://hitosara.com/0031345439/" target="_blank" rel="noopener">ヒトサラ ↗</a><a class="rtel" href="tel:0422713133">0422-71-3133</a></div></div>
+        <div class="row"><div class="rmain"><span class="nm serif">鮨 まつ本</span><span class="rbadges"><b class="pill newin">New</b></span></div><div class="ract"><a class="rsv" href="https://omakase.in/ja/r/qa127836" target="_blank" rel="noopener">OMAKASE ↗</a><a class="rtel" href="tel:0359441435">03-5944-1435</a></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <p class="note">
+    <b>データについて。</b> ミシュラン枠は2026年7月時点でWeb（ミシュラン公式・食べログ・一休・OMAKASE・TableCheck・各店公式等）から収集。百名店は <a href="https://award.tabelog.com/hyakumeiten/sushi_tokyo/2025" target="_blank" rel="noopener">食べログ「寿司 TOKYO 百名店 2025」公式ページ</a>（全100店）に基づき、各店の電話・予約導線をWeb調査で付記しました。<b>価格・営業時間・予約方法・電話番号は変動します。</b> 「050」始まりの電話は予約サイトの転送番号の場合があり、鮨さいとう麻布台の番号・喜楽の番地・鮨川のビル名など一部未確定/要確認の項目があります。予約・訪問前に各店の一次情報でご確認ください。
+    <span class="disc">星・ビブの区分はご提供いただいた一覧に基づきます。「青空＝はるたか」「西麻布 拓＝一つ星（二つ星は別店・鮨しん）」など、元リストから補正した点があります。バッジの「予約困難／会員制」は複数のまとめ記事で会員制/紹介制/長期待ちと繰り返し言及される店、「New」は百名店2025の初選出、「Award」は食べログAward 2025の受賞区分です。「一般予約なし」「電話のみ」等は調査時点の運用で、キャンセル枠等で変わることがあります。</span>
+  </p>
+</footer>
+
+<script>
+  function showView(which) {
+    var m = which === 'm';
+    document.getElementById('view-m').hidden = !m;
+    document.getElementById('view-h').hidden = m;
+    document.getElementById('tab-m').setAttribute('aria-selected', m ? 'true' : 'false');
+    document.getElementById('tab-h').setAttribute('aria-selected', m ? 'false' : 'true');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('nav.jump a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var el = document.querySelector(a.getAttribute('href'));
+      if (!el) return;
+      e.preventDefault();
+      var y = el.getBoundingClientRect().top + window.scrollY - 108;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+
+  // Inject "map" links (open Google Maps search) into every store.
+  function mapUrl(q) {
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+  }
+  // Michelin cards: name (excluding yomi) + area chip
+  document.querySelectorAll('#view-m .card').forEach(function (card) {
+    var h3 = card.querySelector('h3');
+    var actions = card.querySelector('.actions');
+    if (!h3 || !actions) return;
+    var name = '';
+    h3.childNodes.forEach(function (n) { if (n.nodeType === 3) name += n.textContent; });
+    name = name.trim();
+    if (!name) return;
+    var areaEl = card.querySelector('.chip.area');
+    var area = areaEl ? areaEl.textContent.trim() : '';
+    var a = document.createElement('a');
+    a.className = 'map';
+    a.href = mapUrl(name + ' ' + area + ' 東京');
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = '🗺️ 地図';
+    actions.appendChild(a);
+  });
+  // Hyakumeiten rows: name (parentheses -> space) + 東京 鮨
+  document.querySelectorAll('#view-h .row').forEach(function (row) {
+    var nm = row.querySelector('.nm');
+    var ract = row.querySelector('.ract');
+    if (!nm || !ract) return;
+    var name = nm.textContent.replace(/[（）]/g, ' ').trim();
+    if (!name) return;
+    var a = document.createElement('a');
+    a.className = 'rmap';
+    a.href = mapUrl(name + ' 東京 鮨');
+    a.target = '_blank'; a.rel = 'noopener';
+    a.textContent = '🗺️';
+    ract.appendChild(a);
+  });
+</script>
+</body>
+</html>
