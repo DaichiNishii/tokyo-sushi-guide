@@ -146,6 +146,21 @@
   .ract a.rmap:hover { background: var(--ink); color: var(--ground); border-color: var(--ink); }
   .rnote { font-size: 12px; color: var(--ink-soft); background: color-mix(in srgb, var(--good) 9%, transparent); border-left: 2px solid color-mix(in srgb, var(--good) 55%, var(--line)); padding: 5px 9px; border-radius: 4px; line-height: 1.55; }
 
+  /* ---- Visit log ---- */
+  .log { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+  .log-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .log-head h3 { font-family: "Hiragino Mincho ProN","Yu Mincho",serif; font-size: 22px; font-weight: 600; margin: 0; letter-spacing: .02em; }
+  .log-date { color: var(--ink-faint); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .log-badges { display: flex; gap: 6px; margin: 12px 0 4px; flex-wrap: wrap; align-items: center; }
+  .stars-rating { color: var(--gold-bright); letter-spacing: 1px; font-size: 15px; }
+  .course-label { font-size: 11px; letter-spacing: .12em; color: var(--ink-faint); text-transform: uppercase; margin: 18px 0 2px; font-weight: 700; }
+  .course { list-style: none; padding: 0; margin: 6px 0 0; }
+  .course li { padding: 8px 0 8px 28px; border-top: 1px solid var(--line-soft); position: relative; font-size: 14px; line-height: 1.55; }
+  .course li:first-child { border-top: 0; }
+  .course li .no { position: absolute; left: 0; top: 8px; color: var(--shu); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .course .fav { color: var(--shu); font-weight: 600; }
+  .quote { margin: 18px 0 0; padding: 13px 16px; border-left: 3px solid var(--shu); background: color-mix(in srgb, var(--shu) 6%, transparent); border-radius: 0 8px 8px 0; font-size: 14px; color: var(--ink); font-family: "Hiragino Mincho ProN","Yu Mincho",serif; line-height: 1.7; }
+
   footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 26px 18px 50px; }
   footer .note { font-size: 12px; color: var(--ink-faint); line-height: 1.7; max-width: 60ch; margin: 0 auto; }
   footer .note b { color: var(--ink-soft); }
@@ -166,6 +181,7 @@
   <div class="inner">
     <button id="tab-m" aria-selected="true" onclick="showView('m')">ミシュラン 2026<span class="sub">星付き＋ビブ 30軒</span></button>
     <button id="tab-h" aria-selected="false" onclick="showView('h')">百名店 100<span class="sub">食べログ寿司TOKYO</span></button>
+    <button id="tab-v" aria-selected="false" onclick="showView('v')">訪問ログ<span class="sub">行った店の記録</span></button>
   </div>
 </div>
 
@@ -642,6 +658,46 @@
   </main>
 </div>
 
+<!-- ================= VIEW: VISIT LOG ================= -->
+<div class="view" id="view-v" hidden>
+  <main class="wrap">
+    <p style="text-align:center;color:var(--ink-soft);font-size:13.5px;margin:26px auto 18px;max-width:44ch">実際に行った店の記録。おまかせの流れと感想をメモしていきます。</p>
+
+    <article class="log">
+      <div class="log-head">
+        <h3 class="serif">西麻布 鮨 真</h3>
+        <span class="log-date">2026.07.30（水）夜</span>
+      </div>
+      <div class="log-badges">
+        <span class="chip area">西麻布</span>
+        <span class="chip" style="background:color-mix(in srgb,var(--gold) 16%,transparent);color:var(--gold-bright);border:1px solid color-mix(in srgb,var(--gold) 40%,transparent)">ミシュラン★★</span>
+        <span class="stars-rating">★★★★★</span>
+      </div>
+
+      <p class="course-label">つまみ</p>
+      <ol class="course">
+        <li><span class="no">1</span>みる貝</li>
+        <li><span class="no">2</span>真鯛</li>
+        <li><span class="no">3</span>帆立と青さの茶碗蒸し（オイル仕立て）</li>
+        <li><span class="no">4</span><span class="fav">鰹</span> — 脂の部分を辛子で。臭みがまったくない</li>
+        <li><span class="no">5</span><span class="fav">鮑と鮑の肝のリゾット</span> — この日のハイライト</li>
+        <li><span class="no">6</span>あん肝の紹興酒・醤油煮／毛蟹</li>
+        <li><span class="no">7</span>雲丹と柑橘のジュレ</li>
+      </ol>
+
+      <p class="course-label">握り〜締め</p>
+      <ol class="course">
+        <li><span class="no">◦</span>握り数貫</li>
+        <li><span class="no">◦</span><span class="fav">金目鯛（締め）</span> — 最後まで最高</li>
+      </ol>
+
+      <p class="quote">鮑の肝のリゾットがサイコーに美味かった。カツオの脂は辛子で、臭みもない。——またいきたい。</p>
+    </article>
+
+    <p style="text-align:center;color:var(--ink-faint);font-size:12px;margin:20px auto 0;max-width:46ch">※2026/7/25 の一件は店名を確認中（判明したら追記）。写真も後日ここに添えられます。</p>
+  </main>
+</div>
+
 <footer>
   <p class="note">
     <b>データについて。</b> ミシュラン枠は2026年7月時点でWeb（ミシュラン公式・食べログ・一休・OMAKASE・TableCheck・各店公式等）から収集。百名店は <a href="https://award.tabelog.com/hyakumeiten/sushi_tokyo/2025" target="_blank" rel="noopener">食べログ「寿司 TOKYO 百名店 2025」公式ページ</a>（全100店）に基づき、各店の電話・予約導線をWeb調査で付記しました。<b>価格・営業時間・予約方法・電話番号は変動します。</b> 「050」始まりの電話は予約サイトの転送番号の場合があり、鮨さいとう麻布台の番号・喜楽の番地・鮨川のビル名など一部未確定/要確認の項目があります。予約・訪問前に各店の一次情報でご確認ください。
@@ -651,11 +707,12 @@
 
 <script>
   function showView(which) {
-    var m = which === 'm';
-    document.getElementById('view-m').hidden = !m;
-    document.getElementById('view-h').hidden = m;
-    document.getElementById('tab-m').setAttribute('aria-selected', m ? 'true' : 'false');
-    document.getElementById('tab-h').setAttribute('aria-selected', m ? 'false' : 'true');
+    ['m', 'h', 'v'].forEach(function (k) {
+      var view = document.getElementById('view-' + k);
+      var tab = document.getElementById('tab-' + k);
+      if (view) view.hidden = (k !== which);
+      if (tab) tab.setAttribute('aria-selected', k === which ? 'true' : 'false');
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   document.querySelectorAll('nav.jump a').forEach(function (a) {
